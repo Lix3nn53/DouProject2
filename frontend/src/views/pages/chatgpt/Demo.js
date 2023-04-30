@@ -11,9 +11,13 @@ import { gridSpacing } from 'store/constant';
 import { IconAdjustmentsHorizontal, IconSearch, IconX, IconSend } from '@tabler/icons';
 import { shouldForwardProp } from '@mui/system';
 
+// api
+import { grammerCorrection } from '../../../api/aiAPI';
+
 const Chat = styled(Card, { shouldForwardProp })(({ theme }) => ({
     flex: 1,
-    maxHeight: 'calc(100vh - 230px)',
+    height: '76vh',
+    maxHeight: '76vh',
     width: '98%',
     marginLeft: 16,
     marginRight: 16,
@@ -36,7 +40,7 @@ const ChatBubbleSent = styled(Card, { shouldForwardProp })(({ theme }) => ({
 
 const ChatBubbleInner = styled(Card, { shouldForwardProp })(({ theme }) => ({
     padding: 16,
-    background: 'red'
+    background: theme.palette.primary[200]
 }));
 
 const ChatInput = styled(OutlinedInput, { shouldForwardProp })(({ theme }) => ({
@@ -54,7 +58,7 @@ const ChatInput = styled(OutlinedInput, { shouldForwardProp })(({ theme }) => ({
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
 const Dashboard = () => {
-    const [chatHistory, setChatHistory] = useState(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
+    const [chatHistory, setChatHistory] = useState([]);
     const [isLoading, setLoading] = useState(true);
     useEffect(() => {
         setLoading(false);
@@ -82,19 +86,29 @@ const Dashboard = () => {
             }
         });
 
-        console.log(result);
-
         return result;
     };
 
     const onChatSubmit = (value) => {
-        setChatHistory([...chatHistory, value, '...']);
+        const chatAfterInput = [...chatHistory, value, '...'];
+        setChatHistory(chatAfterInput);
         setValue('');
         // Scroll to bottom after delay
         setTimeout(() => {
             const chat = document.getElementById('chat');
             chat.scrollTop = chat.scrollHeight;
         }, 100);
+
+        // Send to backend
+        grammerCorrection(value).then((res) => {
+            console.log(res);
+            // remove first 3 characters and last character
+            res = res.substring(3, res.length - 1);
+            // replace last element with response
+            const chatAfterBotResponse = [...chatAfterInput];
+            chatAfterBotResponse[chatAfterBotResponse.length - 1] = res;
+            setChatHistory(chatAfterBotResponse);
+        });
     };
 
     return (

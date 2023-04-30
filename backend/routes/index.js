@@ -22,8 +22,8 @@ router.get(
 //openai routes
 
 router.post(
-  "/openai/grammerCorrection",
-  passport.authenticate("jwt", { session: false }),
+  "/app/grammerCorrection",
+  // passport.authenticate("jwt", { session: false }),
   (req, res) => {
     return controller.openaiController.grammerCorrection(req, res);
   }

@@ -27,11 +27,11 @@ exports.grammerCorrection = async (req, res) => {
       presence_penalty: 0.0,
     });
 
-    const gptResponse = response.data.choices[0].text;
+    const text = response.data.choices[0].text;
 
     return res.json({
       success: true,
-      gptResponse,
+      text,
     });
   } catch (err) {
     console.log(err);

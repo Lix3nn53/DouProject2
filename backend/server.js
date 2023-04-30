@@ -6,6 +6,7 @@ const routes = require("./routes/index");
 const application = require("./config/application");
 const database = require("./config/database");
 const helmet = require("helmet");
+const cors = require("cors");
 const path = require("path");
 const passport = require("passport");
 
@@ -23,6 +24,7 @@ app.set("view engine", "pug"); // we use the engine pug, mustache or EJS work gr
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
+app.use(cors());
 // Passport middleware
 app.use(passport.initialize());
 require("./config/passport")(passport);
