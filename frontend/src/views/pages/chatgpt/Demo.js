@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
 import { Avatar, Box, ButtonBase, Card, Grid, InputAdornment, OutlinedInput, Popper } from '@mui/material';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
 // project imports
 import { gridSpacing } from 'store/constant';
@@ -58,7 +59,7 @@ const ChatInput = styled(OutlinedInput, { shouldForwardProp })(({ theme }) => ({
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
 const Dashboard = () => {
-    const [chatHistory, setChatHistory] = useState([]);
+    const [chatHistory, setChatHistory] = useState(['Hello! Write an english sentence to get a grammer correction.']);
     const [isLoading, setLoading] = useState(true);
     useEffect(() => {
         setLoading(false);
@@ -71,9 +72,9 @@ const Dashboard = () => {
         const result = [];
 
         chatHistory.forEach((chat, index) => {
-            if (index % 2 === 1) {
+            if (index % 2 === 0) {
                 result.push(
-                    <ChatBubbleResponse>
+                    <ChatBubbleResponse component="div">
                         <ChatBubbleInner>{chat}</ChatBubbleInner>
                     </ChatBubbleResponse>
                 );
@@ -102,8 +103,6 @@ const Dashboard = () => {
         // Send to backend
         grammerCorrection(value).then((res) => {
             console.log(res);
-            // remove first 3 characters and last character
-            res = res.substring(3, res.length - 1);
             // replace last element with response
             const chatAfterBotResponse = [...chatAfterInput];
             chatAfterBotResponse[chatAfterBotResponse.length - 1] = res;
@@ -115,7 +114,9 @@ const Dashboard = () => {
         <Grid container spacing={gridSpacing} flex={1} flexDirection={'column'} height={'100%'}>
             <Grid item flex={1}>
                 <Box flex={1} height={'100%'}>
-                    <Chat id="chat">{renderChatHistory()}</Chat>
+                    <PerfectScrollbar>
+                        <Chat id="chat">{renderChatHistory()}</Chat>
+                    </PerfectScrollbar>
                 </Box>
             </Grid>
             <Grid item>
@@ -133,7 +134,9 @@ const Dashboard = () => {
                         placeholder="Enter your text..."
                         endAdornment={
                             <InputAdornment position="end">
-                                <IconSend stroke={1.5} size="1rem" color={theme.palette.grey[500]} />
+                                <ButtonBase sx={{ borderRadius: '12px' }} onClick={() => onChatSubmit(value)}>
+                                    <IconSend stroke={1.5} size="1rem" color={theme.palette.grey[500]} />
+                                </ButtonBase>
                             </InputAdornment>
                         }
                         aria-describedby="search-helper-text"
