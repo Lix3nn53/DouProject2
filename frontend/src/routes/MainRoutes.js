@@ -17,6 +17,9 @@ const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 
+// chatgpt routing
+const ChatGPTDemo = Loadable(lazy(() => import('views/pages/chatgpt/Demo')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -84,6 +87,15 @@ const MainRoutes = {
         {
             path: 'sample-page',
             element: <SamplePage />
+        },
+        {
+            path: 'app',
+            children: [
+                {
+                    path: 'demo',
+                    element: <ChatGPTDemo />
+                }
+            ]
         }
     ]
 };
