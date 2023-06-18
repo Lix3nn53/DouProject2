@@ -25,6 +25,7 @@ function getSelectedNode(selection) {
 export default forwardRef((props, ref) => {
     const [editor] = useLexicalComposerContext();
     const [selectedNodeKey, setSelectedNodeKey] = useState(-1);
+    const [selectedNodeText, setSelectedNodeText] = useState(null);
 
     const highlightSelection = useCallback(() => {
         const nativeSelection = window.getSelection().toString();
@@ -61,6 +62,7 @@ export default forwardRef((props, ref) => {
         // node.__style = 'red';
         node.setStyle('background-color: #22f3bc');
         setSelectedNodeKey(currentKey);
+        setSelectedNodeText(text);
 
         // node.setTextContent('sssssssssssss');
     }, [editor, selectedNodeKey]);
@@ -82,14 +84,21 @@ export default forwardRef((props, ref) => {
         ref,
         () => {
             return {
-                setSelectedNodeText() {
-                    console.log('setSelectedNodeText');
-                    console.log('selectedNodeKey', selectedNodeKey);
+                getSelectedNodeText() {
+                    if (selectedNodeKey != -1) {
+                        if (selectedNodeKey != -1) {
+                            return selectedNodeText;
+                        }
+                    }
+
+                    return null;
+                },
+                setSelectedNodeText(text) {
                     editor.update(() => {
                         if (selectedNodeKey != -1) {
                             const selectedNode = $getNodeByKey(selectedNodeKey);
                             if (selectedNode != null) {
-                                selectedNode.setTextContent('sssssssssssss');
+                                selectedNode.setTextContent(text);
                             }
                         }
                     });

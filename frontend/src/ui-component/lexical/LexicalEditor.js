@@ -60,8 +60,11 @@ export default forwardRef((props, ref) => {
         ref,
         () => {
             return {
-                setSelectedNodeText() {
-                    innerRef.current.setSelectedNodeText();
+                getSelectedNodeText() {
+                    return innerRef.current.getSelectedNodeText();
+                },
+                setSelectedNodeText(text) {
+                    innerRef.current.setSelectedNodeText(text);
                 }
             };
         },
@@ -69,29 +72,27 @@ export default forwardRef((props, ref) => {
     );
 
     return (
-        <div>
-            <LexicalComposer initialConfig={editorConfig}>
-                <div className="editor-container">
-                    <ToolbarPlugin />
-                    <div className="editor-inner">
-                        <RichTextPlugin
-                            contentEditable={<ContentEditable className="editor-input" />}
-                            placeholder={<Placeholder />}
-                            ErrorBoundary={LexicalErrorBoundary}
-                        />
-                        <HistoryPlugin />
-                        {/* <TreeViewPlugin /> */}
-                        <AutoFocusPlugin />
-                        <CodeHighlightPlugin />
-                        <ListPlugin />
-                        <LinkPlugin />
-                        <AutoLinkPlugin />
-                        <ListMaxIndentLevelPlugin maxDepth={7} />
-                        <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-                        <SelectionPlugin ref={innerRef} />
-                    </div>
+        <LexicalComposer initialConfig={editorConfig}>
+            <div className="editor-container">
+                <ToolbarPlugin />
+                <div className="editor-inner">
+                    <RichTextPlugin
+                        contentEditable={<ContentEditable className="editor-input" />}
+                        placeholder={<Placeholder />}
+                        ErrorBoundary={LexicalErrorBoundary}
+                    />
+                    <HistoryPlugin />
+                    {/* <TreeViewPlugin /> */}
+                    <AutoFocusPlugin />
+                    <CodeHighlightPlugin />
+                    <ListPlugin />
+                    <LinkPlugin />
+                    <AutoLinkPlugin />
+                    <ListMaxIndentLevelPlugin maxDepth={7} />
+                    <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+                    <SelectionPlugin ref={innerRef} />
                 </div>
-            </LexicalComposer>
-        </div>
+            </div>
+        </LexicalComposer>
     );
 });

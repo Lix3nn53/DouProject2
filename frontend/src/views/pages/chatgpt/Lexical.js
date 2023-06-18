@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
-import { Avatar, Box, ButtonBase, Card, Grid, InputAdornment, OutlinedInput, Popper } from '@mui/material';
+import { Avatar, Box, Button, Card, Grid, InputAdornment, OutlinedInput, Popper } from '@mui/material';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 // project imports
@@ -18,45 +18,15 @@ import { grammerCorrection } from '../../../api/aiAPI';
 // components
 import LexicalEditor from '../../../ui-component/lexical/LexicalEditor';
 
-const Chat = styled(Card, { shouldForwardProp })(({ theme }) => ({
-    flex: 1,
-    height: '76vh',
-    maxHeight: '76vh',
-    width: '98%',
-    marginLeft: 16,
-    marginRight: 16,
-    paddingLeft: 16,
-    paddingRight: 16,
-    flexDirection: 'column-reverse',
-    overflowY: 'scroll'
+const Title = styled('h1', { shouldForwardProp })(({ theme }) => ({
+    textAlign: 'center',
+    fontSize: '24px'
 }));
 
-const ChatBubbleResponse = styled(Card, { shouldForwardProp })(({ theme }) => ({
-    margin: 16,
-    display: 'flex'
-}));
-
-const ChatBubbleSent = styled(Card, { shouldForwardProp })(({ theme }) => ({
-    margin: 16,
-    display: 'flex',
-    flexDirection: 'row-reverse'
-}));
-
-const ChatBubbleInner = styled(Card, { shouldForwardProp })(({ theme }) => ({
-    padding: 16,
-    background: theme.palette.primary[200]
-}));
-
-const ChatInput = styled(OutlinedInput, { shouldForwardProp })(({ theme }) => ({
-    width: '98%',
-    marginLeft: 16,
-    marginRight: 16,
-    paddingLeft: 16,
-    paddingRight: 16,
-    '& input': {
-        background: 'transparent !important',
-        paddingLeft: '4px !important'
-    }
+const SubTitle = styled('h1', { shouldForwardProp })(({ theme }) => ({
+    textAlign: 'center',
+    fontSize: '20px',
+    fontWeight: '600'
 }));
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
@@ -70,14 +40,57 @@ const Dashboard = () => {
     }, []);
 
     function handleClick() {
-        console.log('ref', innerRef);
-        innerRef.current.setSelectedNodeText();
+        const a = innerRef.current.getSelectedNodeText();
+        console.log('ref', a);
     }
 
+    const grammerCorrectionButton = () => {
+        const value = innerRef.current.getSelectedNodeText();
+
+        // Send to backend
+        grammerCorrection(value).then((res) => {
+            console.log(res);
+            innerRef.current.setSelectedNodeText(res);
+        });
+    };
+
     return (
-        <Grid container spacing={gridSpacing} flex={1} flexDirection={'column'} height={'100%'}>
-            <LexicalEditor ref={innerRef} />
-            <button onClick={handleClick}>Click me</button>
+        <Grid container spacing={gridSpacing} flex={1} flexDirection={'row'} height={'100%'}>
+            <Box flex={2} height={'100%'} display={'flex'}>
+                <LexicalEditor ref={innerRef} />
+            </Box>
+            <Box flex={1} height={'100%'} display={'flex'} flexDirection={'column'} marginTop={'24px'}>
+                <Title>Ask AI</Title>
+                <SubTitle>Edit or review selection</SubTitle>
+                <Box display={'flex'} flexDirection={'column'}>
+                    <Button variant="outlined" onClick={grammerCorrectionButton}>
+                        Fix spelling and grammer
+                    </Button>
+                </Box>
+                <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
+                    <Button variant="outlined" onClick={handleClick}>
+                        Make shorter
+                    </Button>
+                </Box>
+                <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
+                    <Button variant="outlined" onClick={handleClick}>
+                        Make longer
+                    </Button>
+                </Box>
+                <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
+                    <Button variant="outlined" onClick={handleClick}>
+                        Change tone {'>'}
+                    </Button>
+                </Box>
+                <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
+                    <Button variant="outlined" onClick={handleClick}>
+                        Simplify language
+                    </Button>
+                </Box>
+                <SubTitle>Generate from selection</SubTitle>
+                <SubTitle>Write with AI</SubTitle>
+                <SubTitle>Draft with AI</SubTitle>
+            </Box>
         </Grid>
     );
 };
