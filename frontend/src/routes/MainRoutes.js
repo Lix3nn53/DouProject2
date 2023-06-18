@@ -4,9 +4,6 @@ import { lazy } from 'react';
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 
-// dashboard routing
-const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
-
 // utilities routing
 const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
 const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
@@ -24,73 +21,11 @@ const AppLexical = Loadable(lazy(() => import('views/pages/chatgpt/Lexical')));
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
-    path: '/',
+    path: '/app',
     element: <MainLayout />,
     children: [
         {
-            path: '/',
-            element: <DashboardDefault />
-        },
-        {
-            path: 'dashboard',
-            children: [
-                {
-                    path: 'default',
-                    element: <DashboardDefault />
-                }
-            ]
-        },
-        {
-            path: 'utils',
-            children: [
-                {
-                    path: 'util-typography',
-                    element: <UtilsTypography />
-                }
-            ]
-        },
-        {
-            path: 'utils',
-            children: [
-                {
-                    path: 'util-color',
-                    element: <UtilsColor />
-                }
-            ]
-        },
-        {
-            path: 'utils',
-            children: [
-                {
-                    path: 'util-shadow',
-                    element: <UtilsShadow />
-                }
-            ]
-        },
-        {
-            path: 'icons',
-            children: [
-                {
-                    path: 'tabler-icons',
-                    element: <UtilsTablerIcons />
-                }
-            ]
-        },
-        {
-            path: 'icons',
-            children: [
-                {
-                    path: 'material-icons',
-                    element: <UtilsMaterialIcons />
-                }
-            ]
-        },
-        {
-            path: 'sample-page',
-            element: <SamplePage />
-        },
-        {
-            path: 'app',
+            path: '/app/',
             children: [
                 {
                     path: 'demo',

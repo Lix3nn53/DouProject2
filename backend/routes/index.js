@@ -4,10 +4,10 @@ const controller = require("../app/providers/controllerProvider");
 const passport = require("passport");
 
 //auth routes
-router.post("/register", (req, res) => {
+router.post("/auth/register", (req, res) => {
   return controller.registerController.register(req, res);
 });
-router.post("/login", (req, res) => {
+router.post("/auth/login", (req, res) => {
   return controller.loginController.login(req, res);
 });
 

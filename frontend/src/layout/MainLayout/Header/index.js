@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
 
+// react
+import { useEffect } from 'react';
+
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Box, ButtonBase } from '@mui/material';
@@ -13,9 +16,18 @@ import NotificationSection from './NotificationSection';
 // assets
 import { IconMenu2 } from '@tabler/icons';
 
+// redux
+import { useDispatch, useSelector } from 'react-redux';
+
 // ==============================|| MAIN NAVBAR / HEADER ||============================== //
 
 const Header = ({ handleLeftDrawerToggle }) => {
+    const user = useSelector((state) => state.user);
+
+    useEffect(() => {
+        console.log('user', user);
+    }, [user]);
+
     const theme = useTheme();
 
     return (
