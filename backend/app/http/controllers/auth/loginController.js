@@ -6,7 +6,7 @@ const key = require("../../../../config/application").key;
 
 exports.login = (req, res) => {
   // Find user by email
-  user.findOne({ email: req.body.email }).then(user => {
+  user.findOne({ email: req.body.email }).then((user) => {
     // Check for user
     if (!user) {
       // errors.email = "User not found";
@@ -14,16 +14,16 @@ exports.login = (req, res) => {
     }
 
     // Check Password
-    bcrypt.compare(req.body.password, user.password).then(isMatch => {
+    bcrypt.compare(req.body.password, user.password).then((isMatch) => {
       if (isMatch) {
         // User Matched
         const payload = { id: user.id, name: user.name, email: user.email }; // Create JWT Payload
 
         // Sign Token
-        jwt.sign(payload, key, { expiresIn: 3600 }, (err, token) => {
+        jwt.sign(payload, key, { expiresIn: "10 days" }, (err, token) => {
           return res.json({
             success: true,
-            token: "Bearer " + token
+            token: "Bearer " + token,
           });
         });
       } else {
@@ -38,6 +38,6 @@ exports.currentUser = (req, res) => {
   return res.json({
     id: req.user.id,
     name: req.user.name,
-    email: req.user.email
+    email: req.user.email,
   });
 };

@@ -6,7 +6,7 @@ import app from './app';
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-    items: [dashboard, pages, app]
+    items: [app]
 };
 
 export default menuItems;

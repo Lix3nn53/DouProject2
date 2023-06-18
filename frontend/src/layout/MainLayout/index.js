@@ -71,6 +71,15 @@ const MainLayout = () => {
     const handleLeftDrawerToggle = () => {
         dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
     };
+    const user = useSelector((state) => state.user);
+
+    const renderSideBar = () => {
+        if (user.user != null) {
+            return <Sidebar drawerOpen={!matchDownMd ? leftDrawerOpened : !leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />;
+        } else {
+            return <></>;
+        }
+    };
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -92,7 +101,7 @@ const MainLayout = () => {
             </AppBar>
 
             {/* drawer */}
-            <Sidebar drawerOpen={!matchDownMd ? leftDrawerOpened : !leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
+            {renderSideBar()}
 
             {/* main content */}
             <Main theme={theme} open={leftDrawerOpened}>

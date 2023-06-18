@@ -1,32 +1,32 @@
 {
-  "name": "mern",
+  "name": "dou2",
   "version": "0.1.0",
-  "description": "Mern Starter",
+  "description": "DouProject2",
   "main": "index.js",
   "scripts": {
     "server": "cd backend && npm run start",
     "server-install": "cd backend && npm install",
-    "start":"cd frontend && npm run start",	
+    "start": "cd frontend && npm run start",
     "client": "cd frontend && npm start",
     "client-install": "cd frontend && npm install",
-    "upgrade" : "npm run server-install && npm run client-install",
+    "upgrade": "npm run server-install && npm run client-install",
     "dev": "concurrently \"npm run server\" \"npm run start\"",
     "setup": "npm install && npm run client-install && npm run server-install && npm run dev"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mern-stack/mern.git"
+    "url": "git+https://github.com/Lix3nn53/DouProject2.git"
   },
   "keywords": [
     "mern",
     "starter"
   ],
-  "author": "Ritesh Singh",
+  "author": "Utku Akyildiz",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mern-stack/mern/issues"
+    "url": "https://github.com/Lix3nn53/DouProject2/issues"
   },
-  "homepage": "https://github.com/mern-stack/mern#readme",
+  "homepage": "https://github.com/Lix3nn53/DouProject2#readme",
   "dependencies": {
     "concurrently": "^4.1.0"
   }

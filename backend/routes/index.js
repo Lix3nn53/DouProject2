@@ -12,7 +12,7 @@ router.post("/auth/login", (req, res) => {
 });
 
 router.get(
-  "/current",
+  "/auth/current",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     return controller.loginController.currentUser(req, res);

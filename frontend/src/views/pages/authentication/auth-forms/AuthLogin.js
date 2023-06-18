@@ -35,6 +35,9 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import Google from 'assets/images/icons/social-google.svg';
 
+// api
+import { loginUser } from '../../../../api/authAPI';
+
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const FirebaseLogin = ({ ...others }) => {
@@ -120,9 +123,8 @@ const FirebaseLogin = ({ ...others }) => {
 
             <Formik
                 initialValues={{
-                    email: 'info@codedthemes.com',
-                    password: '123456',
-                    submit: null
+                    email: 'test@test.com',
+                    password: 'test123'
                 }}
                 validationSchema={Yup.object().shape({
                     email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
@@ -134,6 +136,12 @@ const FirebaseLogin = ({ ...others }) => {
                             setStatus({ success: true });
                             setSubmitting(false);
                         }
+                        loginUser(values).then((res) => {
+                            console.log(res);
+                            if (res.success) {
+                                window.location.replace('/');
+                            }
+                        });
                     } catch (err) {
                         console.error(err);
                         if (scriptedRef.current) {
