@@ -1,6 +1,6 @@
 import './styles.css';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import ExampleTheme from './themes/ExampleTheme';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
@@ -54,28 +54,38 @@ const editorConfig = {
 };
 
 export default function Editor() {
+    const myRef = useRef(null);
+
+    function handleClick() {
+        console.log('ref', myRef);
+        myRef.current.setSelectedNodeText();
+    }
+
     return (
-        <LexicalComposer initialConfig={editorConfig}>
-            <div className="editor-container">
-                <ToolbarPlugin />
-                <div className="editor-inner">
-                    <RichTextPlugin
-                        contentEditable={<ContentEditable className="editor-input" />}
-                        placeholder={<Placeholder />}
-                        ErrorBoundary={LexicalErrorBoundary}
-                    />
-                    <HistoryPlugin />
-                    {/* <TreeViewPlugin /> */}
-                    <AutoFocusPlugin />
-                    <CodeHighlightPlugin />
-                    <ListPlugin />
-                    <LinkPlugin />
-                    <AutoLinkPlugin />
-                    <ListMaxIndentLevelPlugin maxDepth={7} />
-                    <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-                    <SelectionPlugin />
+        <div>
+            <LexicalComposer initialConfig={editorConfig}>
+                <div className="editor-container">
+                    <ToolbarPlugin />
+                    <div className="editor-inner">
+                        <RichTextPlugin
+                            contentEditable={<ContentEditable className="editor-input" />}
+                            placeholder={<Placeholder />}
+                            ErrorBoundary={LexicalErrorBoundary}
+                        />
+                        <HistoryPlugin />
+                        {/* <TreeViewPlugin /> */}
+                        <AutoFocusPlugin />
+                        <CodeHighlightPlugin />
+                        <ListPlugin />
+                        <LinkPlugin />
+                        <AutoLinkPlugin />
+                        <ListMaxIndentLevelPlugin maxDepth={7} />
+                        <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+                        <SelectionPlugin ref={myRef} />
+                    </div>
                 </div>
-            </div>
-        </LexicalComposer>
+            </LexicalComposer>
+            <button onClick={handleClick}>Click me</button>
+        </div>
     );
 }

@@ -1,5 +1,5 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import { SELECTION_CHANGE_COMMAND, $getSelection, $isRangeSelection, $isNodeSelection, $createParagraphNode, $getNodeByKey } from 'lexical';
 import { $isAtNodeEnd } from '@lexical/selection';
 import { mergeRegister } from '@lexical/utils';
@@ -22,22 +22,31 @@ function getSelectedNode(selection) {
     }
 }
 
-export default function SelectionPlugin() {
+export default forwardRef((props, ref) => {
     const [editor] = useLexicalComposerContext();
-    const [prevNodeKey, setPrevNodeKey] = useState(-1);
+    const [selectedNodeKey, setSelectedNodeKey] = useState(-1);
 
-    const updateToolbar = useCallback(() => {
+    const highlightSelection = useCallback(() => {
+        const nativeSelection = window.getSelection().toString();
+
+        if (nativeSelection.length > 0) {
+            console.log('SelectionPlugin nativeSelection:', nativeSelection.toString());
+            return;
+        }
+
         const selection = $getSelection();
+        console.log(selection);
+
         const node = getSelectedNode(selection);
         console.log('SelectionPlugin node:', node);
         const text = node.__text;
         // console.log('SelectionPlugin:', text);
 
-        // console.log('prevNode:', prevNodeKey);
+        // console.log('prevNode:', selectedNodeKey);
         const currentKey = node.__key;
         // console.log('currentKey:', currentKey);
-        if (prevNodeKey != -1 && prevNodeKey != currentKey) {
-            const selectedNode = $getNodeByKey(prevNodeKey);
+        if (selectedNodeKey != -1 && selectedNodeKey != currentKey) {
+            const selectedNode = $getNodeByKey(selectedNodeKey);
             if (selectedNode != null) {
                 selectedNode.setStyle('background-color: #fff');
             }
@@ -51,21 +60,44 @@ export default function SelectionPlugin() {
         // node.setStyle('color', 'red');
         // node.__style = 'red';
         node.setStyle('background-color: #22f3bc');
-        setPrevNodeKey(currentKey);
-    }, [editor, prevNodeKey]);
+        setSelectedNodeKey(currentKey);
+
+        // node.setTextContent('sssssssssssss');
+    }, [editor, selectedNodeKey]);
 
     useEffect(() => {
         return mergeRegister(
             editor.registerCommand(
                 SELECTION_CHANGE_COMMAND,
                 (_payload, newEditor) => {
-                    updateToolbar();
+                    highlightSelection();
                     return false;
                 },
                 LowPriority
             )
         );
-    }, [editor, updateToolbar]);
+    }, [editor, highlightSelection]);
+
+    useImperativeHandle(
+        ref,
+        () => {
+            return {
+                setSelectedNodeText() {
+                    console.log('setSelectedNodeText');
+                    console.log('selectedNodeKey', selectedNodeKey);
+                    editor.update(() => {
+                        if (selectedNodeKey != -1) {
+                            const selectedNode = $getNodeByKey(selectedNodeKey);
+                            if (selectedNode != null) {
+                                selectedNode.setTextContent('sssssssssssss');
+                            }
+                        }
+                    });
+                }
+            };
+        },
+        [editor, selectedNodeKey]
+    );
 
     return null;
-}
+});
