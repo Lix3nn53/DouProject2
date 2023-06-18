@@ -12,10 +12,18 @@ const app = {
     type: 'group',
     children: [
         {
-            id: 'sample-page',
+            id: 'app/demo',
             title: 'Demo',
             type: 'item',
             url: '/app/demo',
+            icon: icons.IconBrandChrome,
+            breadcrumbs: false
+        },
+        {
+            id: 'app/lexical',
+            title: 'Lexical',
+            type: 'item',
+            url: '/app/lexical',
             icon: icons.IconBrandChrome,
             breadcrumbs: false
         }

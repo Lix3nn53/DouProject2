@@ -19,6 +19,7 @@ const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 
 // chatgpt routing
 const ChatGPTDemo = Loadable(lazy(() => import('views/pages/chatgpt/Demo')));
+const AppLexical = Loadable(lazy(() => import('views/pages/chatgpt/Lexical')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -94,6 +95,10 @@ const MainRoutes = {
                 {
                     path: 'demo',
                     element: <ChatGPTDemo />
+                },
+                {
+                    path: 'lexical',
+                    element: <AppLexical />
                 }
             ]
         }
