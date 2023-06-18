@@ -63,20 +63,20 @@ const ChatInput = styled(OutlinedInput, { shouldForwardProp })(({ theme }) => ({
 
 const Dashboard = () => {
     const [isLoading, setLoading] = useState(true);
-    const myRef = useRef(null);
+    const innerRef = useRef(null);
 
     useEffect(() => {
         setLoading(false);
     }, []);
 
     function handleClick() {
-        console.log('ref', myRef);
-        ref.current.setSelectedNodeText();
+        console.log('ref', innerRef);
+        innerRef.current.setSelectedNodeText();
     }
 
     return (
         <Grid container spacing={gridSpacing} flex={1} flexDirection={'column'} height={'100%'}>
-            <LexicalEditor />
+            <LexicalEditor ref={innerRef} />
             <button onClick={handleClick}>Click me</button>
         </Grid>
     );

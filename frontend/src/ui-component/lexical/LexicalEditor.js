@@ -1,6 +1,6 @@
 import './styles.css';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 
 import ExampleTheme from './themes/ExampleTheme';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
@@ -53,13 +53,20 @@ const editorConfig = {
     ]
 };
 
-export default function Editor() {
-    const myRef = useRef(null);
+export default forwardRef((props, ref) => {
+    const innerRef = useRef(null);
 
-    function handleClick() {
-        console.log('ref', myRef);
-        myRef.current.setSelectedNodeText();
-    }
+    useImperativeHandle(
+        ref,
+        () => {
+            return {
+                setSelectedNodeText() {
+                    innerRef.current.setSelectedNodeText();
+                }
+            };
+        },
+        [innerRef]
+    );
 
     return (
         <div>
@@ -81,11 +88,10 @@ export default function Editor() {
                         <AutoLinkPlugin />
                         <ListMaxIndentLevelPlugin maxDepth={7} />
                         <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-                        <SelectionPlugin ref={myRef} />
+                        <SelectionPlugin ref={innerRef} />
                     </div>
                 </div>
             </LexicalComposer>
-            <button onClick={handleClick}>Click me</button>
         </div>
     );
-}
+});
