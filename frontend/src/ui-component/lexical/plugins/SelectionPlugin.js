@@ -122,7 +122,7 @@ export default forwardRef((props, ref) => {
                 }
             };
         },
-        [editor, selectedNodeKey]
+        [editor, selectedNodeKey, innerEditorState]
     );
 
     return null;

@@ -60,9 +60,12 @@ const Dashboard = () => {
                     const doc = response.document;
                     setDocument(doc);
 
-                    if (doc && doc.value && doc.value != null && doc.value !== '') {
-                        console.log(doc.value);
-                        setEditorState(doc.value);
+                    if (doc && doc.value) {
+                        if (doc.value == null) {
+                            setEditorState('');
+                        } else {
+                            setEditorState(doc.value);
+                        }
                     }
                 }
             } catch (error) {
@@ -89,12 +92,12 @@ const Dashboard = () => {
 
     const updateDocumentInner = async () => {
         const updatedObject = { ...document };
-        updatedObject.title = updatedObject.title + 'B';
+        updatedObject.title = updatedObject.title;
         updatedObject.value = innerRef.current.getEditorState();
         setDocument(updatedObject);
 
         try {
-            const response = await updateDocument(updatedObject._id, updatedObject.title, updatedObject.value);
+            const response = await updateDocument(id, updatedObject.title, updatedObject.value);
 
             if (response.success) {
                 getDocuments().then((response) => {
@@ -110,7 +113,7 @@ const Dashboard = () => {
 
     const deleteDocumentInner = async () => {
         try {
-            const response = await deleteDocument(document._id);
+            const response = await deleteDocument(id);
 
             if (response.success) {
                 getDocuments().then((response) => {
@@ -284,7 +287,7 @@ const Dashboard = () => {
                 </Box>
                 <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
                     <Button variant="outlined" onClick={deleteDocumentInner}>
-                        Remove Document
+                        Delete Document
                     </Button>
                 </Box>
             </>

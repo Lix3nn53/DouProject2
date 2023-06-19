@@ -42,6 +42,9 @@ import { createDocument, getDocuments } from '../../../api/documentsAPI';
 // redux
 import { GET_DOCUMENTS } from '../../../store/actions';
 
+const DEFAULT_VALUE =
+    '{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}';
+
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
 const FirebaseRegister = ({ ...others }) => {
@@ -103,7 +106,7 @@ const FirebaseRegister = ({ ...others }) => {
                             setSubmitting(false);
                         }
                         setSubmitting(true);
-                        createDocument(values.title, null).then((res) => {
+                        createDocument(values.title, DEFAULT_VALUE).then((res) => {
                             if (res.success) {
                                 getDocuments().then((response) => {
                                     if (response.success) {
