@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 // material-ui
@@ -46,6 +46,7 @@ import { GET_DOCUMENTS } from '../../../store/actions';
 
 const FirebaseRegister = ({ ...others }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const theme = useTheme();
     const scriptedRef = useScriptRef();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
@@ -109,6 +110,7 @@ const FirebaseRegister = ({ ...others }) => {
                                         dispatch({ type: GET_DOCUMENTS, data: response.documents });
                                     }
                                 });
+                                navigate('/app/document/' + res.document._id);
                             } else {
                                 setStatus({ success: false });
                                 setErrors({ submit: res.message });

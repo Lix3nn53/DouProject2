@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SELECT_DOCUMENT, GET_DOCUMENTS } from '../../../store/actions';
@@ -23,7 +23,7 @@ import { grammerCorrection } from '../../../api/aiAPI';
 import LexicalEditor from '../../../ui-component/lexical/LexicalEditor';
 
 // api
-import { getDocument, updateDocument, getDocuments } from '../../../api/documentsAPI';
+import { getDocument, updateDocument, getDocuments, deleteDocument } from '../../../api/documentsAPI';
 
 const Title = styled('h1', { shouldForwardProp })(({ theme }) => ({
     textAlign: 'center',
@@ -41,6 +41,7 @@ const SubTitle = styled('h1', { shouldForwardProp })(({ theme }) => ({
 const Dashboard = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
+    const navigate = useNavigate();
     const [isLoading, setLoading] = useState(true);
     const [buttonState, setButtonState] = useState(0);
     const innerRef = useRef(null);
@@ -101,6 +102,24 @@ const Dashboard = () => {
                         dispatch({ type: GET_DOCUMENTS, data: response.documents });
                     }
                 });
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    const deleteDocumentInner = async () => {
+        try {
+            const response = await deleteDocument(document._id);
+
+            if (response.success) {
+                getDocuments().then((response) => {
+                    if (response.success) {
+                        dispatch({ type: GET_DOCUMENTS, data: response.documents });
+                    }
+                });
+
+                navigate('/');
             }
         } catch (error) {
             console.log('Error:', error);
@@ -255,6 +274,23 @@ const Dashboard = () => {
         }
     };
 
+    const renderControlButtons = () => {
+        return (
+            <>
+                <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
+                    <Button variant="outlined" onClick={updateDocumentInner}>
+                        Save Document
+                    </Button>
+                </Box>
+                <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
+                    <Button variant="outlined" onClick={deleteDocumentInner}>
+                        Remove Document
+                    </Button>
+                </Box>
+            </>
+        );
+    };
+
     const getTitle = () => {
         switch (buttonState) {
             case 0:
@@ -275,9 +311,20 @@ const Dashboard = () => {
             <Box flex={2} height={'100%'} display={'flex'}>
                 <LexicalEditor ref={innerRef} />
             </Box>
-            <Box flex={1} height={'100%'} display={'flex'} flexDirection={'column'} marginTop={'24px'}>
-                <Title>{getTitle()}</Title>
-                {renderButtons()}
+            <Box
+                flex={1}
+                height={'100%'}
+                display={'flex'}
+                flexDirection={'column'}
+                marginTop={'24px'}
+                paddingBottom={'48px'}
+                justifyContent={'space-between'}
+            >
+                <Box>
+                    <Title>{getTitle()}</Title>
+                    {renderButtons()}
+                </Box>
+                <Box>{renderControlButtons()}</Box>
             </Box>
         </Grid>
     );

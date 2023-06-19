@@ -29,6 +29,7 @@ exports.createDocument = async (req, res) => {
     .then((document) =>
       res.json({
         success: true,
+        document: document,
       })
     )
     .catch((err) => {
