@@ -1,18 +1,14 @@
 import PropTypes from 'prop-types';
 import { forwardRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
 
-// project imports
-import { MENU_OPEN, SET_MENU } from 'store/actions';
-
 // assets
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
-import { IconTypography, IconPalette, IconShadow, IconWindmill, IconFile } from '@tabler/icons';
+import { IconFile } from '@tabler/icons';
 
 // redux types
 import { SELECT_DOCUMENT } from '../../../../store/actions';
@@ -20,6 +16,7 @@ import { SELECT_DOCUMENT } from '../../../../store/actions';
 // ==============================|| SIDEBAR MENU LIST ITEMS ||============================== //
 
 const NavItem = ({ item }) => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
@@ -29,6 +26,7 @@ const NavItem = ({ item }) => {
 
     const itemHandler = () => {
         dispatch({ type: SELECT_DOCUMENT, data: item._id });
+        navigate('/app/document/' + item._id);
     };
 
     // active menu item on page load
@@ -44,7 +42,7 @@ const NavItem = ({ item }) => {
                 pl: `24px`
             }}
             selected={selected}
-            onClick={() => itemHandler()}
+            onClick={itemHandler}
         >
             <ListItemIcon sx={{ my: 'auto', minWidth: 36 }}>
                 <Icon stroke={1.5} size="1.3rem" />

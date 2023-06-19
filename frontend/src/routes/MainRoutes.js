@@ -39,6 +39,10 @@ const MainRoutes = {
                 {
                     path: 'create',
                     element: <AppCreate />
+                },
+                {
+                    path: 'document/:id',
+                    element: <AppLexical />
                 }
             ]
         }

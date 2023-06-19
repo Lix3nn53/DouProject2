@@ -6,12 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography, useMediaQuery } from '@mui/material';
 
-// project imports
-import { MENU_OPEN, SET_MENU } from 'store/actions';
-
-// assets
-import { IconTypography, IconPalette, IconShadow, IconWindmill } from '@tabler/icons';
-
 import DocumentListEntry from './DocumentsListEntry';
 
 // redux types
@@ -25,12 +19,7 @@ import { getDocuments } from '../../../../api/documentsAPI';
 const NavItem = () => {
     const dispatch = useDispatch();
     const theme = useTheme();
-    const customization = useSelector((state) => state.customization);
     const documents = useSelector((state) => state.user.documents);
-
-    const Icon = IconWindmill;
-
-    const itemHandler = () => {};
 
     useEffect(() => {
         const fetchData = async () => {

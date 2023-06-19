@@ -31,7 +31,10 @@ exports.createDocument = async (req, res) => {
         success: true,
       })
     )
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err });
+    });
 };
 
 exports.getDocuments = async (req, res) => {
@@ -44,7 +47,10 @@ exports.getDocuments = async (req, res) => {
         documents: documents,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err });
+    });
 };
 
 exports.deleteDocument = async (req, res) => {
@@ -56,7 +62,10 @@ exports.deleteDocument = async (req, res) => {
         success: true,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err });
+    });
 };
 
 exports.updateDocument = async (req, res) => {
@@ -71,7 +80,10 @@ exports.updateDocument = async (req, res) => {
         success: true,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err });
+    });
 };
 
 exports.getDocument = async (req, res) => {
@@ -84,5 +96,8 @@ exports.getDocument = async (req, res) => {
         document: document,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err });
+    });
 };

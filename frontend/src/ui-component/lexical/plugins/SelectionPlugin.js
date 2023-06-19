@@ -113,6 +113,7 @@ export default forwardRef((props, ref) => {
                     });
                 },
                 setEditorState(editorStateJSONString) {
+                    console.log('SelectionPlugin setEditorState:', editorStateJSONString);
                     const editorState = editor.parseEditorState(editorStateJSONString);
                     editor.setEditorState(editorState);
                 },

@@ -45,8 +45,10 @@ export const deleteDocument = async (id) => {
 export const updateDocument = async (id, title, value) => {
     let result;
 
+    let valueString = JSON.stringify(value);
+
     try {
-        const res = await api.post('/documents/update/' + id, { title, value });
+        const res = await api.post('/documents/update/' + id, { title, value: valueString });
 
         result = res.data;
     } catch (err) {

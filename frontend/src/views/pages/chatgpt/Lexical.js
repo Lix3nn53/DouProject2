@@ -1,4 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { SELECT_DOCUMENT, GET_DOCUMENTS } from '../../../store/actions';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -18,6 +22,9 @@ import { grammerCorrection } from '../../../api/aiAPI';
 // components
 import LexicalEditor from '../../../ui-component/lexical/LexicalEditor';
 
+// api
+import { getDocument, updateDocument, getDocuments } from '../../../api/documentsAPI';
+
 const Title = styled('h1', { shouldForwardProp })(({ theme }) => ({
     textAlign: 'center',
     fontSize: '24px'
@@ -32,18 +39,73 @@ const SubTitle = styled('h1', { shouldForwardProp })(({ theme }) => ({
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
 const Dashboard = () => {
+    const dispatch = useDispatch();
+    const { id } = useParams();
     const [isLoading, setLoading] = useState(true);
     const [buttonState, setButtonState] = useState(0);
     const innerRef = useRef(null);
 
+    const [document, setDocument] = useState(null);
+
     useEffect(() => {
         setLoading(false);
-    }, []);
+        dispatch({ type: SELECT_DOCUMENT, data: id });
+
+        const fetchData = async () => {
+            try {
+                const response = await getDocument(id);
+
+                if (response.success) {
+                    const doc = response.document;
+                    setDocument(doc);
+
+                    if (doc && doc.value && doc.value != null && doc.value !== '') {
+                        console.log(doc.value);
+                        setEditorState(doc.value);
+                    }
+                }
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        };
+
+        fetchData();
+    }, [id]);
 
     function handleClick() {
         const a = innerRef.current.getSelectedNodeText();
         console.log('ref', a);
     }
+
+    const getEditorState = () => {
+        const state = innerRef.current.getEditorState();
+        console.log('state', JSON.stringify(state));
+    };
+
+    const setEditorState = (editorStateJSONString) => {
+        innerRef.current.setEditorState(editorStateJSONString);
+    };
+
+    const updateDocumentInner = async () => {
+        const updatedObject = { ...document };
+        updatedObject.title = updatedObject.title + 'B';
+        updatedObject.value = innerRef.current.getEditorState();
+        setDocument(updatedObject);
+
+        try {
+            const response = await updateDocument(updatedObject._id, updatedObject.title, updatedObject.value);
+
+            if (response.success) {
+                getDocuments().then((response) => {
+                    if (response.success) {
+                        dispatch({ type: GET_DOCUMENTS, data: response.documents });
+                    }
+                });
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
 
     const grammerCorrectionButton = () => {
         const value = innerRef.current.getSelectedNodeText();
@@ -52,17 +114,6 @@ const Dashboard = () => {
         grammerCorrection(value).then((res) => {
             innerRef.current.setSelectedNodeText(res);
         });
-    };
-
-    const getEditorState = () => {
-        const state = innerRef.current.getEditorState();
-        console.log('state', JSON.stringify(state));
-    };
-
-    const setEditorState = () => {
-        innerRef.current.setEditorState(
-            '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"background-color: #fff","text":"dfsdfewfwefwefwefw","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"background-color: #22f3bc","text":"e","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":"f","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
-        );
     };
 
     const renderButtons = () => {
@@ -91,8 +142,8 @@ const Dashboard = () => {
                             </Button>
                         </Box>
                         <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
-                            <Button variant="outlined" onClick={() => getEditorState()}>
-                                Debug State
+                            <Button variant="outlined" onClick={() => updateDocumentInner()}>
+                                Save Document
                             </Button>
                         </Box>
                         <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
