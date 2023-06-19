@@ -1,8 +1,8 @@
 // assets
-import { IconBrandChrome, IconHelp } from '@tabler/icons';
+import { IconBrandChrome, IconHelp, IconFilePlus } from '@tabler/icons';
 
 // constant
-const icons = { IconBrandChrome, IconHelp };
+const icons = { IconBrandChrome, IconHelp, IconFilePlus };
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
 
@@ -25,6 +25,14 @@ const app = {
             type: 'item',
             url: '/app/lexical',
             icon: icons.IconBrandChrome,
+            breadcrumbs: false
+        },
+        {
+            id: 'app/create',
+            title: 'New Document',
+            type: 'item',
+            url: '/app/create',
+            icon: icons.IconFilePlus,
             breadcrumbs: false
         }
     ]

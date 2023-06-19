@@ -8,6 +8,16 @@ exports.createDocument = async (req, res) => {
   // }
   const user = req.user;
 
+  // check title exists
+  const existingTitle = await documents.findOne({
+    title: req.body.title,
+    created_by: user.id,
+  });
+  if (existingTitle) {
+    // Email already exists
+    return res.status(422).json({ message: "Title already exists" });
+  }
+
   const document = new documents({
     created_by: user.id,
     title: req.body.title,

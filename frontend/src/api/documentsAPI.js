@@ -14,11 +14,11 @@ export const createDocument = async (title, value) => {
     return result;
 };
 
-export const getDocuments = async (data) => {
+export const getDocuments = async () => {
     let result;
 
     try {
-        const res = await api.get('/documents/list', data);
+        const res = await api.get('/documents/list', {});
 
         result = res.data;
     } catch (err) {
