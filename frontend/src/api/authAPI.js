@@ -1,8 +1,5 @@
-// TODO AUTH API AND REDUX ACTIONS\
 import { getLocalAccessToken, setLocalAccessToken, removeLocalAccessToken } from './tokenService';
-import jwt_decode from 'jwt-decode';
 import api from './index';
-import { LOGOUT } from 'store/actions';
 
 // Register User
 export const registerUser = async (userData) => {

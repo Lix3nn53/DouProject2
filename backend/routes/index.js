@@ -19,6 +19,47 @@ router.get(
   }
 );
 
+// document routes
+router.post(
+  "/documents/create",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    return controller.documentsController.createDocument(req, res);
+  }
+);
+
+router.get(
+  "/documents/list",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    return controller.documentsController.getDocuments(req, res);
+  }
+);
+
+router.post(
+  "/documents/delete/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    return controller.documentsController.deleteDocument(req, res);
+  }
+);
+
+router.post(
+  "/documents/update/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    return controller.documentsController.updateDocument(req, res);
+  }
+);
+
+router.get(
+  "/documents/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    return controller.documentsController.getDocument(req, res);
+  }
+);
+
 //openai routes
 
 router.post(
