@@ -31,13 +31,13 @@ export default forwardRef((props, ref) => {
     const highlightSelection = useCallback(() => {
         const nativeSelection = window.getSelection().toString();
 
-        if (nativeSelection.length > 0) {
-            // console.log('SelectionPlugin nativeSelection:', nativeSelection.toString());
-            return;
-        }
+        // if (nativeSelection.length > 0) {
+        //     // console.log('SelectionPlugin nativeSelection:', nativeSelection.toString());
+        //     return;
+        // }
 
         const selection = $getSelection();
-        // console.log(selection);
+        console.log(selection);
 
         const node = getSelectedNode(selection);
         // console.log('SelectionPlugin node:', node);

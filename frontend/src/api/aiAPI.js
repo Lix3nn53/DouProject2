@@ -10,3 +10,58 @@ export const grammerCorrection = async (prompt) => {
         return err.response.data;
     }
 };
+
+export const improveWriting = async (prompt) => {
+    try {
+        const response = await api.post('/app/improveWriting', { prompt });
+
+        return response.data.text;
+    } catch (err) {
+        return err.response.data;
+    }
+};
+export const makeShorter = async (prompt) => {
+    try {
+        const response = await api.post('/app/makeShorter', { prompt });
+
+        return response.data.text;
+    } catch (err) {
+        return err.response.data;
+    }
+};
+export const makeLonger = async (prompt) => {
+    try {
+        const response = await api.post('/app/makeLonger', { prompt });
+
+        return response.data.text;
+    } catch (err) {
+        return err.response.data;
+    }
+};
+export const changeTone = async (prompt, tone) => {
+    try {
+        const response = await api.post('/app/changeTone', { prompt, tone });
+
+        return response.data.text;
+    } catch (err) {
+        return err.response.data;
+    }
+};
+export const simplifyLanguage = async (prompt) => {
+    try {
+        const response = await api.post('/app/simplifyLanguage', { prompt });
+
+        return response.data.text;
+    } catch (err) {
+        return err.response.data;
+    }
+};
+export const continueWriting = async (prompt) => {
+    try {
+        const response = await api.post('/app/continueWriting', { prompt });
+
+        return response.data.text;
+    } catch (err) {
+        return err.response.data;
+    }
+};

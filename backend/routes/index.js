@@ -70,4 +70,28 @@ router.post(
   }
 );
 
+router.post("/app/improveWriting", (req, res) => {
+  return controller.openaiController.improveWriting(req, res);
+});
+
+router.post("/app/makeShorter", (req, res) => {
+  return controller.openaiController.makeShorter(req, res);
+});
+
+router.post("/app/makeLonger", (req, res) => {
+  return controller.openaiController.makeLonger(req, res);
+});
+
+router.post("/app/changeTone", (req, res) => {
+  return controller.openaiController.changeTone(req, res);
+});
+
+router.post("/app/simplifyLanguage", (req, res) => {
+  return controller.openaiController.simplifyLanguage(req, res);
+});
+
+router.post("/app/continueWriting", (req, res) => {
+  return controller.openaiController.continueWriting(req, res);
+});
+
 module.exports = router;
