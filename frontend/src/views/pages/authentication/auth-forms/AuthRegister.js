@@ -135,6 +135,7 @@ const FirebaseRegister = ({ ...others }) => {
                     confirm_password: 'test123'
                 }}
                 validationSchema={Yup.object().shape({
+                    name: Yup.string().max(255).required('Name is required'),
                     email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
                     password: Yup.string().min(6).max(255).required('Password is required'),
                     confirm_password: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
@@ -146,7 +147,11 @@ const FirebaseRegister = ({ ...others }) => {
                             setSubmitting(false);
                         }
                         registerUser(values).then((res) => {
-                            console.log(res);
+                            if (res.success) {
+                                window.location.replace('/pages/login');
+                            } else {
+                                setErrors({ submit: res.message });
+                            }
                         });
                     } catch (err) {
                         console.error(err);
@@ -168,6 +173,8 @@ const FirebaseRegister = ({ ...others }) => {
                                 name="name"
                                 type="text"
                                 value={values.name}
+                                onBlur={handleBlur}
+                                onChange={handleChange}
                                 sx={{ ...theme.typography.customInput }}
                             />
                         </Grid>
