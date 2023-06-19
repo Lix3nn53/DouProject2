@@ -94,4 +94,16 @@ router.post("/app/continueWriting", (req, res) => {
   return controller.openaiController.continueWriting(req, res);
 });
 
+router.post("/app/translate", (req, res) => {
+  return controller.openaiController.translate(req, res);
+});
+
+router.post("/app/summarize", (req, res) => {
+  return controller.openaiController.summarize(req, res);
+});
+
+router.post("/app/explain", (req, res) => {
+  return controller.openaiController.explain(req, res);
+});
+
 module.exports = router;

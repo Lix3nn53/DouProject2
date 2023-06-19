@@ -72,6 +72,9 @@ export default forwardRef((props, ref) => {
                 },
                 getEditorState() {
                     return innerRef.current.getEditorState();
+                },
+                createTextNode(text) {
+                    return innerRef.current.createTextNode(text);
                 }
             };
         },

@@ -1,6 +1,15 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useCallback, useEffect, useState, forwardRef, useImperativeHandle } from 'react';
-import { SELECTION_CHANGE_COMMAND, $getSelection, $isRangeSelection, $isNodeSelection, $createParagraphNode, $getNodeByKey } from 'lexical';
+import {
+    SELECTION_CHANGE_COMMAND,
+    $getSelection,
+    $getRoot,
+    $createTextNode,
+    $isRangeSelection,
+    $isNodeSelection,
+    $createParagraphNode,
+    $getNodeByKey
+} from 'lexical';
 import { $isAtNodeEnd } from '@lexical/selection';
 import { mergeRegister } from '@lexical/utils';
 
@@ -119,6 +128,24 @@ export default forwardRef((props, ref) => {
                 },
                 getEditorState() {
                     return innerEditorState;
+                },
+                createTextNode(text) {
+                    editor.update(() => {
+                        // Get the RootNode from the EditorState
+                        const root = $getRoot();
+
+                        // Create a new ParagraphNode
+                        const paragraphNode = $createParagraphNode();
+
+                        // Create a new TextNode
+                        const textNode = $createTextNode(text);
+
+                        // Append the text node to the paragraph
+                        paragraphNode.append(textNode);
+
+                        // Finally, append the paragraph to the root
+                        root.append(paragraphNode);
+                    });
                 }
             };
         },

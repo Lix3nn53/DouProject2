@@ -65,3 +65,31 @@ export const continueWriting = async (prompt) => {
         return err.response.data;
     }
 };
+
+export const translate = async (prompt, language) => {
+    try {
+        const response = await api.post('/app/translate', { prompt, language });
+
+        return response.data.text;
+    } catch (err) {
+        return err.response.data;
+    }
+};
+export const summarize = async (prompt) => {
+    try {
+        const response = await api.post('/app/summarize', { prompt });
+
+        return response.data.text;
+    } catch (err) {
+        return err.response.data;
+    }
+};
+export const explain = async (prompt) => {
+    try {
+        const response = await api.post('/app/explain', { prompt });
+
+        return response.data.text;
+    } catch (err) {
+        return err.response.data;
+    }
+};

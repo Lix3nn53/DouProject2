@@ -195,3 +195,83 @@ exports.continueWriting = async (req, res) => {
     return res.status(400).json(err);
   }
 };
+
+exports.translate = async (req, res) => {
+  let prompt = req.body.prompt;
+  let language = req.body.language;
+
+  try {
+    const response = await openai.createCompletion({
+      model: "davinci",
+      prompt: `Translate to ${language}:${prompt}`,
+      temperature: 0,
+      max_tokens: 120,
+      top_p: 1.0,
+      frequency_penalty: 0.0,
+      presence_penalty: 0.0,
+    });
+
+    const text = response.data.choices[0].text;
+
+    return res.json({
+      success: true,
+      text,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err);
+  }
+};
+
+exports.summarize = async (req, res) => {
+  let prompt = req.body.prompt;
+
+  try {
+    const response = await openai.createCompletion({
+      model: "davinci",
+      prompt: `Summarize paragraph:${prompt}`,
+      temperature: 0,
+      max_tokens: 120,
+      top_p: 1.0,
+      frequency_penalty: 0.0,
+      presence_penalty: 0.0,
+      stop: ["\n"],
+    });
+
+    const text = response.data.choices[0].text;
+
+    return res.json({
+      success: true,
+      text,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err);
+  }
+};
+
+exports.explain = async (req, res) => {
+  let prompt = req.body.prompt;
+
+  try {
+    const response = await openai.createCompletion({
+      model: "curie",
+      prompt: `Explain:${prompt}`,
+      temperature: 0,
+      max_tokens: 120,
+      top_p: 1.0,
+      frequency_penalty: 0.0,
+      presence_penalty: 0.0,
+    });
+
+    const text = response.data.choices[0].text;
+
+    return res.json({
+      success: true,
+      text,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err);
+  }
+};

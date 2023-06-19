@@ -26,7 +26,10 @@ import {
     makeLonger,
     changeTone,
     simplifyLanguage,
-    continueWriting
+    continueWriting,
+    translate,
+    summarize,
+    explain
 } from '../../../api/aiAPI';
 
 const Title = styled('h1', { shouldForwardProp })(({ theme }) => ({
@@ -189,6 +192,30 @@ const Dashboard = () => {
         });
     };
 
+    const translateInner = (language) => {
+        const value = innerRef.current.getSelectedNodeText();
+
+        translate(value, language).then((res) => {
+            innerRef.current.setSelectedNodeText(res);
+        });
+    };
+
+    const summarizeInner = () => {
+        const value = innerRef.current.getSelectedNodeText();
+
+        summarize(value).then((res) => {
+            innerRef.current.createTextNode(res);
+        });
+    };
+
+    const explainInner = () => {
+        const value = innerRef.current.getSelectedNodeText();
+
+        explain(value).then((res) => {
+            innerRef.current.createTextNode(res);
+        });
+    };
+
     const renderButtons = () => {
         switch (buttonState) {
             case 0:
@@ -255,17 +282,17 @@ const Dashboard = () => {
                 return (
                     <>
                         <Box display={'flex'} flexDirection={'column'}>
-                            <Button variant="outlined" onClick={grammerCorrectionInner}>
+                            <Button variant="outlined" onClick={summarizeInner}>
                                 Summarize
                             </Button>
                         </Box>
                         <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
-                            <Button variant="outlined" onClick={grammerCorrectionInner}>
+                            <Button variant="outlined" onClick={() => setButtonState(4)}>
                                 Translate {'>'}
                             </Button>
                         </Box>
                         <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
-                            <Button variant="outlined" onClick={grammerCorrectionInner}>
+                            <Button variant="outlined" onClick={explainInner}>
                                 Explain this
                             </Button>
                         </Box>
@@ -302,6 +329,66 @@ const Dashboard = () => {
                         <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
                             <Button variant="outlined" onClick={() => changeToneInner('Friendly')}>
                                 Friendly
+                            </Button>
+                        </Box>
+                        <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
+                            <Button variant="contained" onClick={() => setButtonState(0)}>
+                                Back
+                            </Button>
+                        </Box>
+                    </>
+                );
+            case 4:
+                return (
+                    <>
+                        <Box display={'flex'} flexDirection={'column'}>
+                            <Button variant="outlined" onClick={() => translateInner('English')}>
+                                English
+                            </Button>
+                        </Box>
+                        <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
+                            <Button variant="outlined" onClick={() => translateInner('Korean')}>
+                                Korean
+                            </Button>
+                        </Box>
+                        <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
+                            <Button variant="outlined" onClick={() => translateInner('Chinese')}>
+                                Chinese
+                            </Button>
+                        </Box>
+                        <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
+                            <Button variant="outlined" onClick={() => translateInner('German')}>
+                                German
+                            </Button>
+                        </Box>
+                        <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
+                            <Button variant="contained" onClick={() => setButtonState(0)}>
+                                Back
+                            </Button>
+                        </Box>
+                    </>
+                );
+            case 5:
+                return (
+                    <>
+                        <Box display={'flex'} flexDirection={'column'}>
+                            <Button variant="outlined" onClick={() => translateInner('English')}>
+                                Twitter
+                            </Button>
+                        </Box>
+                        <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
+                            <Button variant="outlined" onClick={() => translateInner('Korean')}>
+                                Korean
+                            </Button>
+                        </Box>
+                        <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
+                            <Button variant="outlined" onClick={() => translateInner('Chinese')}>
+                                Chinese
+                            </Button>
+                        </Box>
+                        <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
+                            <Button variant="outlined" onClick={() => translateInner('German')}>
+                                German
                             </Button>
                         </Box>
                         <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
