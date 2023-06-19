@@ -3,6 +3,7 @@ import './styles.css';
 import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 
 import ExampleTheme from './themes/ExampleTheme';
+// import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
@@ -65,6 +66,12 @@ export default forwardRef((props, ref) => {
                 },
                 setSelectedNodeText(text) {
                     innerRef.current.setSelectedNodeText(text);
+                },
+                setEditorState(editorStateJSONString) {
+                    innerRef.current.setEditorState(editorStateJSONString);
+                },
+                getEditorState() {
+                    return innerRef.current.getEditorState();
                 }
             };
         },

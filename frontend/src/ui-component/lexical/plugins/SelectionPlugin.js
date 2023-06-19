@@ -26,26 +26,24 @@ export default forwardRef((props, ref) => {
     const [editor] = useLexicalComposerContext();
     const [selectedNodeKey, setSelectedNodeKey] = useState(-1);
     const [selectedNodeText, setSelectedNodeText] = useState(null);
+    const [innerEditorState, setInnerEditorState] = useState(null);
 
     const highlightSelection = useCallback(() => {
         const nativeSelection = window.getSelection().toString();
 
         if (nativeSelection.length > 0) {
-            console.log('SelectionPlugin nativeSelection:', nativeSelection.toString());
+            // console.log('SelectionPlugin nativeSelection:', nativeSelection.toString());
             return;
         }
 
         const selection = $getSelection();
-        console.log(selection);
+        // console.log(selection);
 
         const node = getSelectedNode(selection);
-        console.log('SelectionPlugin node:', node);
+        // console.log('SelectionPlugin node:', node);
         const text = node.__text;
-        // console.log('SelectionPlugin:', text);
 
-        // console.log('prevNode:', selectedNodeKey);
         const currentKey = node.__key;
-        // console.log('currentKey:', currentKey);
         if (selectedNodeKey != -1 && selectedNodeKey != currentKey) {
             const selectedNode = $getNodeByKey(selectedNodeKey);
             if (selectedNode != null) {
@@ -58,8 +56,6 @@ export default forwardRef((props, ref) => {
             return;
         }
 
-        // node.setStyle('color', 'red');
-        // node.__style = 'red';
         node.setStyle('background-color: #22f3bc');
         setSelectedNodeKey(currentKey);
         setSelectedNodeText(text);
@@ -68,6 +64,8 @@ export default forwardRef((props, ref) => {
     }, [editor, selectedNodeKey]);
 
     useEffect(() => {
+        setInnerEditorState(editor.getEditorState());
+
         return mergeRegister(
             editor.registerCommand(
                 SELECTION_CHANGE_COMMAND,
@@ -76,7 +74,18 @@ export default forwardRef((props, ref) => {
                     return false;
                 },
                 LowPriority
-            )
+            ),
+            editor.registerUpdateListener(({ editorState }) => {
+                // The latest EditorState can be found as `editorState`.
+                // To read the contents of the EditorState, use the following API:
+
+                setInnerEditorState(editorState);
+
+                editorState.read(() => {
+                    // Just like editor.update(), .read() expects a closure where you can use
+                    // the $ prefixed helper functions.
+                });
+            })
         );
     }, [editor, highlightSelection]);
 
@@ -102,6 +111,13 @@ export default forwardRef((props, ref) => {
                             }
                         }
                     });
+                },
+                setEditorState(editorStateJSONString) {
+                    const editorState = editor.parseEditorState(editorStateJSONString);
+                    editor.setEditorState(editorState);
+                },
+                getEditorState() {
+                    return innerEditorState;
                 }
             };
         },

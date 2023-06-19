@@ -54,6 +54,17 @@ const Dashboard = () => {
         });
     };
 
+    const getEditorState = () => {
+        const state = innerRef.current.getEditorState();
+        console.log('state', JSON.stringify(state));
+    };
+
+    const setEditorState = () => {
+        innerRef.current.setEditorState(
+            '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"background-color: #fff","text":"dfsdfewfwefwefwefw","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"background-color: #22f3bc","text":"e","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":"f","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        );
+    };
+
     const renderButtons = () => {
         switch (buttonState) {
             case 0:
@@ -77,6 +88,16 @@ const Dashboard = () => {
                         <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
                             <Button variant="outlined" onClick={() => setButtonState(4)}>
                                 Draft with AI {'>'}
+                            </Button>
+                        </Box>
+                        <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
+                            <Button variant="outlined" onClick={() => getEditorState()}>
+                                Debug State
+                            </Button>
+                        </Box>
+                        <Box marginTop={'16px'} display={'flex'} flexDirection={'column'}>
+                            <Button variant="outlined" onClick={() => setEditorState()}>
+                                Test Set State
                             </Button>
                         </Box>
                     </>
